@@ -8,7 +8,7 @@ I enjoy C++ programming and computer architecture. This repository serves as a f
 
 ## Contact Information
 
-Questions may be sent to [CoffeeBeforeArch@gmail.com]. If you find a bug, feel free to take out an issue, or make a pull request with a fix.
+Questions may be sent to [CoffeeBeforeArch@gmail.com](CoffeeBeforeArch@gmail.com). If you find a bug, feel free to take out an issue, or make a pull request with a fix.
 
 ## Build Requirements / Instructions
 

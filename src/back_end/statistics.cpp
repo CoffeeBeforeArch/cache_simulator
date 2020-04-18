@@ -1,4 +1,4 @@
-// This file contains the class implementations for statistics
+// This file contains the struct implementations for statistics
 // By: Nick from CoffeeBeforeArch
 // 4/15/2020
 
