@@ -35,7 +35,7 @@ bool CacheSet::probe(uint64_t addr) {
 void CacheSet::replace_line(uint64_t addr) {
   // Check for empty slots
   auto empty_slots =
-      std::accumulate(begin(set_mask), end(set_mask), 0, std::bit_xor<bool>());
+      std::reduce(begin(set_mask), end(set_mask), 0, std::bit_or<bool>());
 
   // Put the address in the first empty slot
   if (empty_slots) {

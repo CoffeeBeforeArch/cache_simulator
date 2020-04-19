@@ -8,7 +8,9 @@
 #include "../pb/cacheConfig.pb.h"
 
 // Constructor
-CacheLevel::CacheLevel(CacheConfig config) : ways(config.associativity()) {
+CacheLevel::CacheLevel(CacheConfig config)
+    : ways(config.associativity()),
+      way_size(config.cache_size() / config.associativity()) {
   // Get the number of sets in the cache
   const auto num_sets =
       config.cache_size() / config.line_size() / config.associativity();
@@ -18,9 +20,14 @@ CacheLevel::CacheLevel(CacheConfig config) : ways(config.associativity()) {
 }
 
 // Probe this level of the cache using the address
-void CacheLevel::probe(uint64_t addr, CacheSet &set) {
-  // Inc. the number of accesses
+void CacheLevel::probe(uint64_t addr, bool type) {
+  // Inc. the number of accesses and stores
   stats.accesses++;
+  stats.stores += type;
+
+  // Lookup which set to access from
+  auto set_number = (addr >> 6) % way_size;
+  auto &set = sets[set_number];
 
   // Inc the number of hits based on the results
   auto hit = set.probe(addr);

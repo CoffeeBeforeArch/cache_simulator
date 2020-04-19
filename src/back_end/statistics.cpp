@@ -4,5 +4,5 @@
 
 #include "statistics.hh"
 
-CacheStats::CacheStats() : accesses(0), hits(0) {}
+CacheStats::CacheStats() : accesses(0), hits(0), loads(0) {}
 

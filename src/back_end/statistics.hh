@@ -17,4 +17,6 @@ struct CacheStats {
   uint64_t accesses;
   // Number of hits
   uint64_t hits;
+  // Number of stores
+  uint64_t stores; 
 };
