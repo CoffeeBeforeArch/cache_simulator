@@ -9,14 +9,10 @@
 
 // Constructor
 CacheLevel::CacheLevel(CacheConfig config)
-    : ways(config.associativity()),
-      way_size(config.cache_size() / config.associativity()) {
-  // Get the number of sets in the cache
-  const auto num_sets =
-      config.cache_size() / config.line_size() / config.associativity();
-
+    : num_sets(config.cache_size() / config.line_size() /
+               config.associativity()) {
   // Allocate and initialize the cache
-  std::fill_n(std::back_inserter(sets), num_sets, CacheSet(ways));
+  std::fill_n(std::back_inserter(sets), num_sets, CacheSet(config.associativity()));
 }
 
 // Probe this level of the cache using the address
@@ -26,10 +22,18 @@ void CacheLevel::probe(uint64_t addr, bool type) {
   stats.stores += type;
 
   // Lookup which set to access from
-  auto set_number = (addr >> 6) % way_size;
+  // Divide by 64 first to remove the offset
+  auto shifted_number = (addr >> 6);
+  // Extract the set bits
+  auto set_number = shifted_number & (num_sets - 1);
+  // Get the cache set
   auto &set = sets[set_number];
 
   // Inc the number of hits based on the results
   auto hit = set.probe(addr);
   stats.hits += hit;
 }
+
+// Destructor
+// Dumps the stats to the screen
+CacheLevel::~CacheLevel() { stats.dump_stats(); }

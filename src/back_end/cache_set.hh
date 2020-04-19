@@ -11,7 +11,7 @@ class CacheSet {
  public:
   // Constructors/Destructors
   CacheSet(int ways);
-  ~CacheSet();
+  ~CacheSet() = default;
 
   // Set functionality methods
   // Look up an address in the cache set

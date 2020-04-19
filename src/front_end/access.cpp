@@ -4,6 +4,7 @@
 
 #include "access.hh"
 #include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -26,7 +27,7 @@ std::tuple<uint64_t, bool> CacheAccess::get_access() {
   // Make the tuple
   auto ret_val =
       std::make_tuple(addresses[current_access], types[current_access]);
-  
+
   // Increment the current access
   current_access++;
 
@@ -58,23 +59,29 @@ unsigned CacheAccess::parse_input_file() {
     if (std::getline(file, line)) {
       // Use stringstream to parse the line
       std::stringstream ss(line);
-
+      
       // Fields to parse from the string
       std::string sink;
-      uint64_t addr;
+      std::string addr_string;
       bool type;
       int insns;
 
       // Get the values
       ss >> sink;
-      ss >> addr;
       ss >> type;
+      ss >> addr_string;
       ss >> insns;
+
+      // Convert address string to hex value
+      uint64_t addr = std::stoull(addr_string, nullptr, 16);
 
       // Fill in the values
       addresses[i] = addr;
       instructions[i] = insns;
       types[i] = type;
+    } else {
+      // End the loop early (file ended)
+      break;
     }
   }
 

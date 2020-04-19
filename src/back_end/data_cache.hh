@@ -36,8 +36,6 @@ class CacheLevel {
   std::vector<CacheSet> sets;
 
   // Associativity of the cache
-  const int ways;
-
-  const int way_size;
+  const uint64_t num_sets;
 };
 

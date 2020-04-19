@@ -12,7 +12,7 @@ class CacheAccess {
  public:
   // Constructors/Destructors
   CacheAccess(unsigned batch_size, std::string trace_file);
-  ~CacheAccess();
+  ~CacheAccess() = default;
 
   // Cache access functionality methods
   // Return a tuple of access and access type

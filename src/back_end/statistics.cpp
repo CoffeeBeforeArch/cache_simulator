@@ -3,6 +3,18 @@
 // 4/15/2020
 
 #include "statistics.hh"
+#include <iostream>
 
-CacheStats::CacheStats() : accesses(0), hits(0), loads(0) {}
+// Constructor
+// Zeros out the statistics
+CacheStats::CacheStats() : accesses(0), hits(0), stores(0) {}
 
+// Dump stats
+// Dump the collected stats to the screen
+void CacheStats::dump_stats() const {
+  std::cout << "ACCESSES:\t" << accesses << '\n';
+  std::cout << "STORES:\t\t" << stores << '\n';
+  std::cout << "LOADS:\t\t" << accesses - stores << '\n';
+  std::cout << "HITS:\t\t" << hits << '\n';
+  std::cout << "HIT RATE:\t" << double(hits / accesses) << '\n';
+}

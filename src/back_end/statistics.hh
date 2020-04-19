@@ -8,9 +8,10 @@
 struct CacheStats {
   // Constructors/Destructors
   CacheStats();
-  ~CacheStats();
+  ~CacheStats() = default;
 
   // Statistics functionality methods
+  void dump_stats() const;
 
   // Data members
   // Cache Accesses
@@ -18,5 +19,5 @@ struct CacheStats {
   // Number of hits
   uint64_t hits;
   // Number of stores
-  uint64_t stores; 
+  uint64_t stores;
 };
