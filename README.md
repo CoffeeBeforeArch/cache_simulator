@@ -12,6 +12,12 @@ Questions may be sent to [CoffeeBeforeArch@gmail.com](CoffeeBeforeArch@gmail.com
 
 ## Build Requirements / Instructions
 
+## Latest Simulator Thoughts
+
+### 4/17/2020
+
+Made some progress on tying all the components together for the first time. While I originally was going to try and write a scanner+parser using a Flex and Bison, I have opted to use a Python frontend. I wrote some simple parsing code for a memory trace file I found online (as part of CS course cache simulator project). I think using this for verification will be a good first step. Until I decide to setup a python frontend I'm going to have a simple test app called driver which will configure
+the simulator and run some tests. The python work should be done soon so I can integrate unit tests as early as possible. Next steps will be to drive the first simulation run, and verify functionality for an LRU replacement policy in a single level cache, collecting only basic stats (#hits, #stores, #accesses).
 
 ## Current Development Status
 
@@ -29,7 +35,7 @@ Here are the current parts of the simulator under active developement:
 - Back End (in-progress)
   - Extendible cache structure (in-progress)
     - Basic caches (in-progress)
-    - Cache lines (in-progress)
+    - Cache sets (in-progress)
   - Statistics (in-progress)
     - Collection (in-progress)
     - Visualization (pending)
