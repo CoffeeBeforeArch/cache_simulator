@@ -16,8 +16,13 @@ struct CacheStats {
   // Data members
   // Cache Accesses
   uint64_t accesses;
+  
   // Number of hits
   uint64_t hits;
+  
   // Number of stores
   uint64_t stores;
+  
+  // Number of instructions
+  uint64_t instructions;
 };

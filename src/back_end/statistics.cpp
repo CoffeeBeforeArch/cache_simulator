@@ -7,7 +7,7 @@
 
 // Constructor
 // Zeros out the statistics
-CacheStats::CacheStats() : accesses(0), hits(0), stores(0) {}
+CacheStats::CacheStats() : accesses(0), hits(0), stores(0), instructions(0) {}
 
 // Dump stats
 // Dump the collected stats to the screen
@@ -16,5 +16,5 @@ void CacheStats::dump_stats() const {
   std::cout << "STORES:\t\t" << stores << '\n';
   std::cout << "LOADS:\t\t" << accesses - stores << '\n';
   std::cout << "HITS:\t\t" << hits << '\n';
-  std::cout << "HIT RATE:\t" << double(hits / accesses) << '\n';
+  std::cout << "HIT RATE:\t" << (double) hits / (double) accesses << '\n';
 }

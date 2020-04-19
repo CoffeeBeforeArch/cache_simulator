@@ -41,4 +41,7 @@ class CacheAccess {
 
   // Current file position;
   unsigned file_position = 0;
+
+  // count the number of accesses
+  uint64_t access = 0;
 };

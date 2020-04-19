@@ -2,6 +2,7 @@
 // By: Nick from CoffeeBeforeArch
 // 4/17/2020
 
+#include <iostream>
 #include <string>
 #include <tuple>
 #include "../back_end/data_cache.hh"
@@ -32,7 +33,6 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < accesses; i++) {
       auto [addr, type] = CA.get_access();
       CL.probe(addr, type);
-      accesses--;
     }
 
     // Try and fetch some more

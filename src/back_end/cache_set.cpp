@@ -5,6 +5,7 @@
 #include "cache_set.hh"
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <numeric>
 #include "../pb/cacheConfig.pb.h"
 
@@ -34,15 +35,18 @@ bool CacheSet::probe(uint64_t addr) {
 // Replace a line in the cache
 void CacheSet::replace_line(uint64_t addr) {
   // Check for empty slots
-  auto empty_slots =
-      std::reduce(begin(set_mask), end(set_mask), 0, std::bit_or<bool>());
+  auto full =
+      std::reduce(begin(set_mask), end(set_mask), 0, std::bit_and<bool>());
 
   // Put the address in the first empty slot
-  if (empty_slots) {
+  if (!full) {
     // Find the first 0
     auto it = std::find(begin(set_mask), end(set_mask), false);
-    auto index  = std::distance(begin(set_mask), it);
+    auto index = std::distance(begin(set_mask), it);
     
+    // This spot is no longer empty
+    *it = true;
+
     // Place the address and return
     lines[index] = addr;
     return;
@@ -50,9 +54,9 @@ void CacheSet::replace_line(uint64_t addr) {
 
   // Find the lowest priority element
   auto it = std::min_element(begin(lines), end(lines));
-  
+
   // Replace the address, and reset the priority
-  auto index  = std::distance(begin(lines), it);
+  auto index = std::distance(begin(lines), it);
   lines[index] = addr;
   priority[index] = 0;
 }
