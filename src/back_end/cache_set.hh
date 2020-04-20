@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include "../pb/cacheConfig.pb.h"
+#include "replacement_policy.hh"
 
 // Top-level cache class
 class CacheSet {
@@ -16,18 +17,23 @@ class CacheSet {
   // Set functionality methods
   // Look up an address in the cache set
   bool probe(uint64_t addr);
-  // Replace a cache line in the set
-  void replace_line(uint64_t addr);
+
+  // Replace a cache line in the set and return where it was stored
+  int replace_line(uint64_t addr);
+
+  // Update the priority of the cache line
+  void update_priority(int latest_line);
 
  private:
   // Data members
   // A set of cache lines
   // Only the starting address for each cache line is stored
   std::vector<uint64_t> lines;
-  // Priority of each line in the set
-  // Used for the replacement policy
+
+  // Number of open lines in the set
+  unsigned used_lines = 0;
+
   std::vector<unsigned> priority;
-  // Mask of unused cache lines in the set
-  // Optimization while sets are still empty
-  std::vector<bool> set_mask;
+  // Class containing logic for the replacement policy
+  //ReplacementPolicy policy;
 };

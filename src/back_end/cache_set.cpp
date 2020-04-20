@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <numeric>
 #include "../pb/cacheConfig.pb.h"
 
@@ -14,7 +15,8 @@
 CacheSet::CacheSet(int ways) {
   lines.resize(ways);
   priority.resize(ways);
-  set_mask.resize(ways);
+  //std::fill_n(std::back_inserter(priority), ways,
+  //            std::numeric_limits<unsigned>::max());
 }
 
 // Probe
@@ -24,8 +26,17 @@ bool CacheSet::probe(uint64_t addr) {
   auto result = std::find(begin(lines), end(lines), addr);
   auto hit = result != end(lines);
 
+  // Find the latest line updated
+  int latest_line;
+
   // Replace line if not found
-  if (!hit) replace_line(addr);
+  if (!hit)
+    latest_line = replace_line(addr);
+  else
+    latest_line = std::distance(begin(lines), result);
+
+  // Update the priority
+  update_priority(latest_line);
 
   // Return the probe status
   return hit;
@@ -33,30 +44,31 @@ bool CacheSet::probe(uint64_t addr) {
 
 // Replace Line
 // Replace a line in the cache
-void CacheSet::replace_line(uint64_t addr) {
+int CacheSet::replace_line(uint64_t addr) {
   // Check for empty slots
-  auto full =
-      std::reduce(begin(set_mask), end(set_mask), 0, std::bit_and<bool>());
+  auto full = used_lines != lines.size();
 
   // Put the address in the first empty slot
   if (!full) {
-    // Find the first 0
-    auto it = std::find(begin(set_mask), end(set_mask), false);
-    auto index = std::distance(begin(set_mask), it);
-    
-    // This spot is no longer empty
-    *it = true;
-
-    // Place the address and return
-    lines[index] = addr;
-    return;
+    // Place the address, update the used lines, and return
+    lines[used_lines] = addr;
+    return used_lines++;
   }
 
-  // Find the lowest priority element
-  auto it = std::min_element(begin(lines), end(lines));
+  // Find the lowest priority element (the max number)
+  auto it = std::max_element(begin(priority), end(priority));
 
   // Replace the address, and reset the priority
-  auto index = std::distance(begin(lines), it);
+  auto index = std::distance(begin(priority), it);
   lines[index] = addr;
-  priority[index] = 0;
+  return index;
+}
+
+// Update the priority
+// Set the priority of the latest line to 0
+void CacheSet::update_priority(int latest_line) {
+  // Update everyone and zero out the other prio
+  // Removes a branch
+  for(auto &p : priority) p++;
+  priority[latest_line] = 0;
 }

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
   // Test our protobuf
   CacheConfig config;
   config.set_cache_size(1 << 16);
-  config.set_line_size(1 << 6);
+  config.set_line_size(1 << 5);
   config.set_associativity(1 << 3);
 
   // Create our cache based on our config

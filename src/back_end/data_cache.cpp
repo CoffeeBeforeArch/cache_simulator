@@ -24,8 +24,10 @@ void CacheLevel::probe(uint64_t addr, bool type) {
   // Lookup which set to access from
   // Divide by 64 first to remove the offset
   auto shifted_number = (addr >> 6);
+  
   // Extract the set bits
   auto set_number = shifted_number & (num_sets - 1);
+ 
   // Get the cache set
   auto &set = sets[set_number];
 
