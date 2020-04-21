@@ -6,29 +6,32 @@
 #include <algorithm>
 #include <bit>
 #include <cstdint>
-#include "../pb/cacheConfig.pb.h"
 #include <iostream>
+#include "../pb/cacheConfig.pb.h"
+
 // Constructor
 CacheLevel::CacheLevel(CacheConfig config)
     : num_sets(config.cache_size() / config.line_size() /
                config.associativity()),
-      line_size(config.line_size()) {
+      line_size(config.line_size()), miss_penalty(config.miss_penalty()) {
   // Allocate and initialize the cache
   std::fill_n(std::back_inserter(sets), num_sets,
               CacheSet(config.associativity()));
 }
 
 // Probe this level of the cache using the address
-void CacheLevel::probe(uint64_t addr, bool type) {
+uint32_t CacheLevel::probe(uint64_t addr, bool type) {
   // Shift over to access the set bits
+  // Use std::popcount to extract the number of bit to shift (c++2a)
   auto shifted_number = addr >> (std::popcount(line_size - 1));
 
   // Extract the set bits
   auto set_number = shifted_number & (num_sets - 1);
-  
+
   // Get the tag bits
+  // Use std::popcount to extract the number of bit to shift (c++2a)
   auto tag = shifted_number >> (std::popcount(num_sets - 1));
-  
+
   // Get the cache set
   auto &set = sets[set_number];
 
@@ -43,6 +46,10 @@ void CacheLevel::probe(uint64_t addr, bool type) {
     stats.load_accesses++;
     stats.load_hits += hit;
   }
+
+  // Return the miss penalty only on a miss
+  // Avoid a branch by integrating the check into the mul
+  return miss_penalty * !hit;
 }
 
 // Destructor

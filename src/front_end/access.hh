@@ -16,7 +16,7 @@ class CacheAccess {
 
   // Cache access functionality methods
   // Return a tuple of access and access type
-  std::tuple<uint64_t, bool> get_access();
+  std::tuple<uint64_t, unsigned, bool> get_access();
   // Fetch a new batch of accesses and return how many were found
   unsigned fetch_access_batch();
   // Parse data from input file

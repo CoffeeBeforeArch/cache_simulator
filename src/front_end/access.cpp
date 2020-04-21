@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <tuple>
@@ -22,11 +23,13 @@ CacheAccess::CacheAccess(unsigned batch_size, std::string trace_file)
 }
 
 // Get access
-// Returns a single memory access and the access type in a tuple
-std::tuple<uint64_t, bool> CacheAccess::get_access() {
+// Returns a single memory access, the number of in-between instructions, and
+// the type
+std::tuple<uint64_t, unsigned, bool> CacheAccess::get_access() {
   // Make the tuple
   auto ret_val =
-      std::make_tuple(addresses[current_access], types[current_access]);
+      std::make_tuple(addresses[current_access], instructions[current_access],
+                      types[current_access]);
 
   // Increment the current access
   current_access++;
@@ -59,7 +62,7 @@ unsigned CacheAccess::parse_input_file() {
     if (std::getline(file, line)) {
       // Use stringstream to parse the line
       std::stringstream ss(line);
-      
+
       // Fields to parse from the string
       std::string sink;
       std::string addr_string;

@@ -7,20 +7,23 @@ syntax = "proto3";
 // Configuration settings for each CacheLevel
 message CacheConfig {
   // Size of the cache (in bytes)
-  int64 cache_size = 1;
+  uint64 cache_size = 1;
 
   // Size of a cache line (in bytes)
-  int32 line_size = 2;
+  uint32 line_size = 2;
 
   // Associativity (number of ways)
-  int32 associativity = 3;
+  uint32 associativity = 3;
+  
+  // Miss penalty (in cycles)
+  uint32 miss_penalty = 4;
 
   // Replacement policy (e.g., LRU)
-  string replacement_policy = 4;
+  string replacement_policy = 5;
 
   // Write policy (e.g., WriteThrough)
-  string write_policy = 5;
+  string write_policy = 6;
 
   // Write miss policy (e.g., Allocate)
-  string write_miss_policy = 6;
+  string write_miss_policy = 7;
 }
