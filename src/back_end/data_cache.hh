@@ -19,12 +19,6 @@ class CacheLevel {
   // Probe the cache for an address
   void probe(uint64_t addr, bool type);
 
-  // Handle a write access (separate early to help correlate branches?)
-  bool handle_write(uint64_t addr);
-
-  // Handle a read access (separate early to help correlate branches?)
-  bool handle_read(uint64_t addr);
-  
   // Replace a cache line
   void replace_line(uint64_t addr);
 
@@ -37,5 +31,8 @@ class CacheLevel {
 
   // Associativity of the cache
   const uint64_t num_sets;
+
+  // Line size of the cache
+  const uint32_t line_size;
 };
 

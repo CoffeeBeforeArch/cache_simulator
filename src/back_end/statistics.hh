@@ -14,14 +14,17 @@ struct CacheStats {
   void dump_stats() const;
 
   // Data members
-  // Cache Accesses
-  uint64_t accesses;
+  // Number of store hits
+  uint64_t store_hits;
   
-  // Number of hits
-  uint64_t hits;
+  // Number of load hits
+  uint64_t load_hits;
   
-  // Number of stores
-  uint64_t stores;
+  // Number of store accesses
+  uint64_t store_accesses;
+  
+  // Number of load accesses
+  uint64_t load_accesses;
   
   // Number of instructions
   uint64_t instructions;

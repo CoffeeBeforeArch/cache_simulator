@@ -15,15 +15,15 @@ int main(int argc, char *argv[]) {
 
   // Test our protobuf
   CacheConfig config;
-  config.set_cache_size(1 << 16);
-  config.set_line_size(1 << 5);
-  config.set_associativity(1 << 3);
+  config.set_cache_size(1 << 14);
+  config.set_line_size(1 << 4);
+  config.set_associativity(1);
 
   // Create our cache based on our config
   CacheLevel CL(config);
 
   // Create our cache access object
-  CacheAccess CA(1 << 12, file_name);
+  CacheAccess CA(1 << 13, file_name);
 
   // Get a new batch of accesses
   size_t accesses = CA.fetch_access_batch();

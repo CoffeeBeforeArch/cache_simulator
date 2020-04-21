@@ -4,36 +4,45 @@
 
 #include "data_cache.hh"
 #include <algorithm>
+#include <bit>
 #include <cstdint>
 #include "../pb/cacheConfig.pb.h"
-
+#include <iostream>
 // Constructor
 CacheLevel::CacheLevel(CacheConfig config)
     : num_sets(config.cache_size() / config.line_size() /
-               config.associativity()) {
+               config.associativity()),
+      line_size(config.line_size()) {
   // Allocate and initialize the cache
-  std::fill_n(std::back_inserter(sets), num_sets, CacheSet(config.associativity()));
+  std::fill_n(std::back_inserter(sets), num_sets,
+              CacheSet(config.associativity()));
 }
 
 // Probe this level of the cache using the address
 void CacheLevel::probe(uint64_t addr, bool type) {
-  // Inc. the number of accesses and stores
-  stats.accesses++;
-  stats.stores += type;
+  // Shift over to access the set bits
+  auto shifted_number = addr >> (std::popcount(line_size - 1));
 
-  // Lookup which set to access from
-  // Divide by 64 first to remove the offset
-  auto shifted_number = (addr >> 6);
-  
   // Extract the set bits
   auto set_number = shifted_number & (num_sets - 1);
- 
+  
+  // Get the tag bits
+  auto tag = shifted_number >> (std::popcount(num_sets - 1));
+  
   // Get the cache set
   auto &set = sets[set_number];
 
   // Inc the number of hits based on the results
-  auto hit = set.probe(addr);
-  stats.hits += hit;
+  auto hit = set.probe(tag);
+
+  // Update stats based on type
+  if (type) {
+    stats.store_accesses++;
+    stats.store_hits += hit;
+  } else {
+    stats.load_accesses++;
+    stats.load_hits += hit;
+  }
 }
 
 // Destructor
