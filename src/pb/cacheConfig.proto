@@ -26,4 +26,7 @@ message CacheConfig {
 
   // Write miss policy (e.g., Allocate)
   string write_miss_policy = 7;
+  
+  // Trace file location
+  string trace_file_path = 8;
 }

@@ -2,6 +2,9 @@
 // By: Nick from CoffeeBeforeArch
 // 4/15/2020
 
+#ifndef DATA_CACHE
+#define DATA_CACHE
+
 #include <cstdint>
 #include <vector>
 #include "../pb/cacheConfig.pb.h"
@@ -39,3 +42,4 @@ class CacheLevel {
   const uint32_t miss_penalty;
 };
 
+#endif

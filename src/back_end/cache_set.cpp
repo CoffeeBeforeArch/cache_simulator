@@ -5,9 +5,8 @@
 #include "cache_set.hh"
 #include <algorithm>
 #include <functional>
-#include <iostream>
-#include <limits>
 #include <numeric>
+#include <tuple>
 #include "../pb/cacheConfig.pb.h"
 
 // Constructor
@@ -15,13 +14,12 @@
 CacheSet::CacheSet(int ways) {
   lines.resize(ways);
   priority.resize(ways);
-  //std::fill_n(std::back_inserter(priority), ways,
-  //            std::numeric_limits<unsigned>::max());
+  dirty_bits.resize(ways);
 }
 
 // Probe
 // Looks up an address in the cache set and returns true if found
-bool CacheSet::probe(uint64_t addr) {
+std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
   // Look up the address in the set
   auto result = std::find(begin(lines), end(lines), addr);
   auto hit = result != end(lines);
@@ -38,13 +36,16 @@ bool CacheSet::probe(uint64_t addr) {
   // Update the priority
   update_priority(latest_line);
 
+  // Get if their was a dirty writeback
+  auto dirty_wb = update_dirty_state(latest_line, type, hit);
+
   // Return the probe status
-  return hit;
+  return {hit, dirty_wb};
 }
 
 // Replace Line
 // Replace a line in the cache
-int CacheSet::replace_line(uint64_t addr) {
+uint32_t CacheSet::replace_line(uint64_t addr) {
   // Check for empty slots
   auto full = used_lines != lines.size();
 
@@ -66,9 +67,24 @@ int CacheSet::replace_line(uint64_t addr) {
 
 // Update the priority
 // Set the priority of the latest line to 0
-void CacheSet::update_priority(int latest_line) {
+void CacheSet::update_priority(uint32_t latest_line) {
   // Update everyone and zero out the other prio
   // Removes a branch
-  for(auto &p : priority) p++;
+  for (auto &p : priority) p++;
   priority[latest_line] = 0;
+}
+
+// Update dirty state
+// Updates the dirty bits for the accessed cache line and returns if their was a
+// dirty eviction
+bool CacheSet::update_dirty_state(uint32_t latest_line, bool type, bool hit) {
+  // Check if this caused a dirty cache line to be written back
+  // Dirty wb only if line was dirty and it was a miss
+  auto dirty_wb = dirty_bits[latest_line] && !hit;
+
+  // Update the dirty state
+  // Dirty if it's a write, or any operation to a dirty cache line that's a hit
+  dirty_bits[latest_line] = type || (hit && dirty_bits[latest_line]);
+
+  return dirty_wb;
 }

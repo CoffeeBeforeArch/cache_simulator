@@ -2,6 +2,9 @@
 // By: Nick from CoffeeBeforeArch
 // 4/17/2020
 
+#ifndef CACHE_ACCESS
+#define CACHE_ACCESS
+
 #include <cstdint>
 #include <string>
 #include <tuple>
@@ -45,3 +48,5 @@ class CacheAccess {
   // count the number of accesses
   uint64_t access = 0;
 };
+
+#endif

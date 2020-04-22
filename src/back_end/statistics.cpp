@@ -7,7 +7,13 @@
 
 // Constructor
 // Zeros out the statistics
-CacheStats::CacheStats() : store_hits(0), load_hits(0), store_accesses(0), load_accesses(0), instructions(0) {}
+CacheStats::CacheStats()
+    : store_hits(0),
+      load_hits(0),
+      store_accesses(0),
+      load_accesses(0),
+      instructions(0),
+      dirty_evictions(0) {}
 
 // Dump stats
 // Dump the collected stats to the screen

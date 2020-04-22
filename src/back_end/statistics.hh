@@ -2,6 +2,9 @@
 // By: Nick from CoffeeBeforeArch
 // 4/15/2020
 
+#ifndef CACHE_STATS
+#define CACHE_STATS
+
 #include <cstdint>
 
 // Top-level statistics class
@@ -28,4 +31,9 @@ struct CacheStats {
   
   // Number of instructions
   uint64_t instructions;
+
+  // Number of diry cache lines evicted
+  uint64_t dirty_evictions;
 };
+
+#endif
