@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <tuple>
 #include <vector>
-#include "../pb/cacheConfig.pb.h"
+#include "cacheConfig.pb.h"
 
 // Top-level cache class
 class CacheSet {

@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstdint>
-#include "../pb/cacheConfig.pb.h"
+#include "cacheConfig.pb.h"
 
 // Constructor
 CacheLevel::CacheLevel(CacheConfig config)

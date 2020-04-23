@@ -3,10 +3,10 @@
 // 4/21/2020
 
 #include <cstdint>
-#include "../back_end/data_cache.hh"
-#include "../back_end/statistics.hh"
-#include "../front_end/access.hh"
-#include "../pb/cacheConfig.pb.h"
+#include "access.hh"
+#include "cacheConfig.pb.h"
+#include "data_cache.hh"
+#include "statistics.hh"
 
 // Top-level simulation class
 class CacheSim {

@@ -4,9 +4,9 @@
 
 #include "simulation.hh"
 #include <iostream>
-#include "../back_end/data_cache.hh"
-#include "../front_end/access.hh"
-#include "../pb/cacheConfig.pb.h"
+#include "access.hh"
+#include "cacheConfig.pb.h"
+#include "data_cache.hh"
 
 // Constructor
 // Initializes the cache level and cache access driver

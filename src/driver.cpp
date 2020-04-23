@@ -6,9 +6,9 @@
 #include <cstdint>
 #include <string>
 #include <tuple>
-#include "../back_end/data_cache.hh"
-#include "../front_end/access.hh"
-#include "../pb/cacheConfig.pb.h"
+#include "access.hh"
+#include "cacheConfig.pb.h"
+#include "data_cache.hh"
 #include "simulation.hh"
 
 // This driver is acting like a pseudo-core that probes the memory system with

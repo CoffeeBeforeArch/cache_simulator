@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <vector>
-#include "../pb/cacheConfig.pb.h"
+#include "cacheConfig.pb.h"
 #include "cache_set.hh"
 #include "statistics.hh"
 
