@@ -18,7 +18,8 @@ CacheSet::CacheSet(int ways) {
 }
 
 // Probe
-// Looks up an address in the cache set and returns true if found
+// Looks up an address in the set, and returns the status and if a dirty cache
+// line was evicted
 std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
   // Look up the address in the set
   auto result = std::find(begin(lines), end(lines), addr);
@@ -44,7 +45,7 @@ std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
 }
 
 // Replace Line
-// Replace a line in the cache
+// Replace a line in the cache and return the line number
 uint32_t CacheSet::replace_line(uint64_t addr) {
   // Check for empty slots
   auto full = used_lines != lines.size();
@@ -68,9 +69,9 @@ uint32_t CacheSet::replace_line(uint64_t addr) {
 // Update the priority
 // Set the priority of the latest line to 0
 void CacheSet::update_priority(uint32_t latest_line) {
-  // Update everyone and zero out the other prio
-  // Removes a branch
+  // Update everyone to avoid extra condition check
   for (auto &p : priority) p++;
+  // Reset the latest line to the highest priority
   priority[latest_line] = 0;
 }
 

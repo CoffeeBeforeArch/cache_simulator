@@ -22,7 +22,7 @@ CacheLevel::CacheLevel(CacheConfig config)
 // Probe this level of the cache using the address
 uint32_t CacheLevel::probe(uint64_t addr, bool type) {
   // Shift over to access the set bits
-  // Use std::popcount to extract the number of bit to shift (c++2a)
+  // Use std::popcount to extract the number of bits to shift (c++2a)
   auto shifted_number = addr >> (std::popcount(line_size - 1));
 
   // Extract the set bits
@@ -52,6 +52,7 @@ uint32_t CacheLevel::probe(uint64_t addr, bool type) {
 
   // Return the miss penalty only on a miss (same with drity writeback)
   // Avoid a branch by integrating the check into the mul
+  // #TODO make penalty for dirty wb configurable
   return (miss_penalty * !hit) + (2 * dirty_wb);
 }
 

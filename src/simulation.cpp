@@ -10,6 +10,7 @@
 
 // Constructor
 // Initializes the cache level and cache access driver
+// Fixed batch size of 8192 accesses
 CacheSim::CacheSim(CacheConfig config)
     : CL(config), CA(1 << 13, config.trace_file_path()) {}
 
