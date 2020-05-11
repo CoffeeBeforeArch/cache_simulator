@@ -7,7 +7,7 @@
 #include <functional>
 #include <numeric>
 #include <tuple>
-#include "cacheConfig.pb.h"
+#include "cache_config.pb.h"
 
 // Constructor
 // Resizes each set based on the number of ways

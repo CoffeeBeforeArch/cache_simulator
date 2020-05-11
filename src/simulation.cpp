@@ -5,7 +5,7 @@
 #include "simulation.hh"
 #include <iostream>
 #include "access.hh"
-#include "cacheConfig.pb.h"
+#include "cache_config.pb.h"
 #include "data_cache.hh"
 
 // Constructor

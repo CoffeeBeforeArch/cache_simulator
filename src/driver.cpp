@@ -7,7 +7,7 @@
 #include <string>
 #include <tuple>
 #include "access.hh"
-#include "cacheConfig.pb.h"
+#include "cache_config.pb.h"
 #include "data_cache.hh"
 #include "simulation.hh"
 

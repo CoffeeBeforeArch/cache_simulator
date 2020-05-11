@@ -4,7 +4,7 @@
 
 #include <cstdint>
 #include "access.hh"
-#include "cacheConfig.pb.h"
+#include "cache_config.pb.h"
 #include "data_cache.hh"
 #include "statistics.hh"
 
