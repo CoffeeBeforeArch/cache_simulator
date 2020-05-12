@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstdint>
+#include <iostream>
 #include "cache_config.pb.h"
 
 // Constructor
@@ -13,7 +14,8 @@ CacheLevel::CacheLevel(CacheConfig config)
     : num_sets(config.cache_size() / config.line_size() /
                config.associativity()),
       line_size(config.line_size()),
-      miss_penalty(config.miss_penalty()) {
+      miss_penalty(config.miss_penalty()),
+      dirty_wb_penalty(config.dirty_wb_penalty) {
   // Allocate and initialize the cache
   std::fill_n(std::back_inserter(sets), num_sets,
               CacheSet(config.associativity()));
@@ -39,15 +41,15 @@ uint32_t CacheLevel::probe(uint64_t addr, bool type) {
   auto [hit, dirty_wb] = set.probe(tag, type);
 
   // Update dirty evictions
-  stats.dirty_evictions += dirty_wb;
+  dirty_evictions += dirty_wb;
 
   // Update stats based on type
   if (type) {
-    stats.store_accesses++;
-    stats.store_hits += hit;
+    store_accesses++;
+    store_hits += hit;
   } else {
-    stats.load_accesses++;
-    stats.load_hits += hit;
+    load_accesses++;
+    load_hits += hit;
   }
 
   // Return the miss penalty only on a miss (same with drity writeback)
@@ -58,4 +60,16 @@ uint32_t CacheLevel::probe(uint64_t addr, bool type) {
 
 // Destructor
 // Dumps the stats to the screen
-CacheLevel::~CacheLevel() { stats.dump_stats(); }
+CacheLevel::~CacheLevel() {
+  std::cout << "ACCESSES:\t" << store_accesses + load_accesses << '\n';
+  std::cout << "STORES:\t\t" << store_accesses << '\n';
+  std::cout << "STORE HITS:\t" << store_hits << '\n';
+  std::cout << "STORE MISSES:\t" << store_accesses - store_hits << '\n';
+  std::cout << "LOADS:\t\t" << load_accesses << '\n';
+  std::cout << "LOAD HITS:\t" << load_hits << '\n';
+  std::cout << "LOAD MISSES:\t" << load_accesses - load_hits << '\n';
+  std::cout << "HIT RATE:\t"
+            << (double)(store_hits + load_hits) /
+                   (double)(store_accesses + load_accesses)
+            << '\n';
+}

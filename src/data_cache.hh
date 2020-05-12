@@ -26,9 +26,6 @@ class CacheLevel {
   void replace_line(uint64_t addr);
 
  private:
-  // Structure of statistics for each cache
-  CacheStats stats = CacheStats();
-
   // Vector of cache line starting addresses
   std::vector<CacheSet> sets;
 
@@ -40,6 +37,27 @@ class CacheLevel {
   
   // Miss penalty of the cache
   const uint32_t miss_penalty;
+
+  // Dirty writeback penalty of the cache
+  const uint32_t dirty_wb_penalty;
+  
+  // Number of store hits
+  uint64_t store_hits = 0;
+  
+  // Number of load hits
+  uint64_t load_hits = 0;
+
+  // Number of store accesses
+  uint64_t store_accesses = 0;
+
+  // Number of load accesses
+  uint64_t load_accesses = 0;
+
+  // Number of dirty evictions
+  uint64_t dirty_evictions = 0;
+
+  // Number of instructions
+  uint64_t instructions = 0;
 };
 
 #endif

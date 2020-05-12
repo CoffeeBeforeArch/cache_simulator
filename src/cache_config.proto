@@ -17,16 +17,19 @@ message CacheConfig {
   
   // Miss penalty (in cycles)
   uint32 miss_penalty = 4;
+  
+  // Dirty wb penalty (in cycles)
+  uint32 dirty_wb_penalty = 5;
 
   // Replacement policy (e.g., LRU)
-  string replacement_policy = 5;
+  string replacement_policy = 6;
 
   // Write policy (e.g., WriteThrough)
-  string write_policy = 6;
+  string write_policy = 7;
 
   // Write miss policy (e.g., Allocate)
-  string write_miss_policy = 7;
+  string write_miss_policy = 8;
   
   // Trace file location
-  string trace_file_path = 8;
+  string trace_file_path = 9;
 }
