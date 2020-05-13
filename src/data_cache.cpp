@@ -15,7 +15,10 @@ CacheLevel::CacheLevel(CacheConfig config)
                config.associativity()),
       line_size(config.line_size()),
       miss_penalty(config.miss_penalty()),
-      dirty_wb_penalty(config.dirty_wb_penalty) {
+      dirty_wb_penalty(config.dirty_wb_penalty()),
+      offset_shift(std::popcount(line_size - 1)),
+      set_mask(num_sets - 1),
+      tag_mask(std::popcount(num_sets - 1)) {
   // Allocate and initialize the cache
   std::fill_n(std::back_inserter(sets), num_sets,
               CacheSet(config.associativity()));
@@ -24,15 +27,13 @@ CacheLevel::CacheLevel(CacheConfig config)
 // Probe this level of the cache using the address
 uint32_t CacheLevel::probe(uint64_t addr, bool type) {
   // Shift over to access the set bits
-  // Use std::popcount to extract the number of bits to shift (c++2a)
-  auto shifted_number = addr >> (std::popcount(line_size - 1));
+  auto shifted_number = addr >> offset_shift;
 
   // Extract the set bits
-  auto set_number = shifted_number & (num_sets - 1);
+  auto set_number = shifted_number & set_mask;
 
   // Get the tag bits
-  // Use std::popcount to extract the number of bit to shift (c++2a)
-  auto tag = shifted_number >> (std::popcount(num_sets - 1));
+  auto tag = shifted_number >> tag_mask;
 
   // Get the cache set
   auto &set = sets[set_number];
@@ -54,8 +55,7 @@ uint32_t CacheLevel::probe(uint64_t addr, bool type) {
 
   // Return the miss penalty only on a miss (same with drity writeback)
   // Avoid a branch by integrating the check into the mul
-  // #TODO make penalty for dirty wb configurable
-  return (miss_penalty * !hit) + (2 * dirty_wb);
+  return (miss_penalty * !hit) + (dirty_wb_penalty * dirty_wb);
 }
 
 // Destructor

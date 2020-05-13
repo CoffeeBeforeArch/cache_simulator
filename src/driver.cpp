@@ -35,6 +35,9 @@ int main(int argc, char *argv[]) {
   // Miss penalty is 42 cycles
   config.set_miss_penalty(42);
 
+  // Dirty writeback penalty is 2 cycles
+  config.set_dirty_wb_penalty(2);
+
   // Set the trace file path
   config.set_trace_file_path(file_name);
 

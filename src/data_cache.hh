@@ -9,7 +9,6 @@
 #include <vector>
 #include "cache_config.pb.h"
 #include "cache_set.hh"
-#include "statistics.hh"
 
 // Top-level cache class
 class CacheLevel {
@@ -40,7 +39,16 @@ class CacheLevel {
 
   // Dirty writeback penalty of the cache
   const uint32_t dirty_wb_penalty;
+ 
+  // Shift offset (to move over padding)
+  const uint64_t offset_shift;
   
+  // Mask for set bits
+  const uint64_t set_mask;
+  
+  // Mask for tag bits
+  const uint64_t tag_mask;
+
   // Number of store hits
   uint64_t store_hits = 0;
   

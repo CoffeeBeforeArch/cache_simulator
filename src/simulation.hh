@@ -6,7 +6,6 @@
 #include "access.hh"
 #include "cache_config.pb.h"
 #include "data_cache.hh"
-#include "statistics.hh"
 
 // Top-level simulation class
 class CacheSim {
