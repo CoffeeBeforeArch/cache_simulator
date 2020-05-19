@@ -20,7 +20,7 @@ CacheSet::CacheSet(int ways) {
 // Probe
 // Looks up an address in the set, and returns the status and if a dirty cache
 // line was evicted
-std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
+std::tuple<uint8_t, uint8_t> CacheSet::probe(uint64_t addr, uint8_t type) {
   // Look up the address in the set
   auto result = std::find(begin(lines), end(lines), addr);
   auto hit = result != end(lines);
@@ -78,7 +78,7 @@ void CacheSet::update_priority(uint32_t latest_line) {
 // Update dirty state
 // Updates the dirty bits for the accessed cache line and returns if their was a
 // dirty eviction
-bool CacheSet::update_dirty_state(uint32_t latest_line, bool type, bool hit) {
+uint8_t CacheSet::update_dirty_state(uint32_t latest_line, uint8_t type, uint8_t hit) {
   // Check if this caused a dirty cache line to be written back
   // Dirty wb only if line was dirty and it was a miss
   auto dirty_wb = dirty_bits[latest_line] && !hit;

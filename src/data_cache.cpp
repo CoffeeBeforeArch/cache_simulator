@@ -25,7 +25,7 @@ CacheLevel::CacheLevel(CacheConfig config)
 }
 
 // Probe this level of the cache using the address
-uint32_t CacheLevel::probe(uint64_t addr, bool type) {
+uint32_t CacheLevel::probe(uint64_t addr, uint8_t type) {
   // Shift over to access the set bits
   auto shifted_number = addr >> offset_shift;
 

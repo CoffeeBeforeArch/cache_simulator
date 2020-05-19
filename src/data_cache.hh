@@ -19,7 +19,7 @@ class CacheLevel {
 
   // Cache functionality methods
   // Probe the cache for an address
-  uint32_t probe(uint64_t addr, bool type);
+  uint32_t probe(uint64_t addr, uint8_t type);
 
   // Replace a cache line
   void replace_line(uint64_t addr);
