@@ -19,7 +19,7 @@ class CacheSet {
 
   // Set functionality methods
   // Look up an address in the cache set
-  std::tuple<uint8_t, uint8_t> probe(uint64_t addr, uint8_t type);
+  std::tuple<bool, bool> probe(uint64_t addr, bool type);
 
   // Replace a cache line in the set and return where it was stored
   uint32_t replace_line(uint64_t addr);
@@ -28,7 +28,7 @@ class CacheSet {
   void update_priority(uint32_t latest_line);
 
   // Update the dirty state of the cache line
-  uint8_t update_dirty_state(uint32_t latest_line, uint8_t type, uint8_t hit);
+  bool update_dirty_state(uint32_t latest_line, bool type, bool hit);
 
  private:
   // Data members
@@ -44,7 +44,7 @@ class CacheSet {
   std::vector<uint32_t> priority;
 
   // Dirty cache line bits
-  std::vector<uint8_t> dirty_bits;
+  std::vector<bool> dirty_bits;
 };
 
 #endif

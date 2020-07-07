@@ -14,7 +14,7 @@
 // Constructor
 // Resizes based on the batch size of addresses to process
 // (Will be neat to experiment how to best load data from a file)
-CacheAccess::CacheAccess(uint32_t batch_size, std::string trace_file)
+CacheAccess::CacheAccess(unsigned batch_size, std::string trace_file)
     : f_name(trace_file) {
   // Resize all the vectors
   addresses.resize(batch_size);
@@ -25,7 +25,7 @@ CacheAccess::CacheAccess(uint32_t batch_size, std::string trace_file)
 // Get access
 // Returns a single memory access, the number of in-between instructions, and
 // the type
-std::tuple<uint64_t, uint32_t, uint8_t> CacheAccess::get_access() {
+std::tuple<uint64_t, unsigned, bool> CacheAccess::get_access() {
   // Make the tuple
   auto ret_val =
       std::make_tuple(addresses[current_access], instructions[current_access],
@@ -40,7 +40,7 @@ std::tuple<uint64_t, uint32_t, uint8_t> CacheAccess::get_access() {
 // Fetch access batch
 // Re-loads the internal vectors with new accesses from a trace
 // Returns the number of accesses parsed
-uint32_t CacheAccess::fetch_access_batch() {
+unsigned CacheAccess::fetch_access_batch() {
   // Reset the access number we're on
   current_access = 0;
 
@@ -50,7 +50,7 @@ uint32_t CacheAccess::fetch_access_batch() {
 
 // Parse input file
 // Gets accesses and their types from an input files
-uint32_t CacheAccess::parse_input_file() {
+unsigned CacheAccess::parse_input_file() {
   // Open the file and seek to the last position
   std::ifstream file(f_name);
   file.seekg(file_position);
@@ -66,7 +66,7 @@ uint32_t CacheAccess::parse_input_file() {
       // Fields to parse from the string
       std::string sink;
       std::string addr_string;
-      uint8_t type;
+      bool type;
       int insns;
 
       // Get the values
