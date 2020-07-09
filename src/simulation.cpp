@@ -3,7 +3,9 @@
 // 4/16/2020
 
 #include "simulation.hh"
+
 #include <iostream>
+
 #include "access.hh"
 #include "cache_config.pb.h"
 #include "data_cache.hh"

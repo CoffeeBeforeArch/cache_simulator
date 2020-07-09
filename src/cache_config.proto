@@ -14,10 +14,10 @@ message CacheConfig {
 
   // Associativity (number of ways)
   uint32 associativity = 3;
-  
+
   // Miss penalty (in cycles)
   uint32 miss_penalty = 4;
-  
+
   // Dirty wb penalty (in cycles)
   uint32 dirty_wb_penalty = 5;
 
@@ -29,7 +29,7 @@ message CacheConfig {
 
   // Write miss policy (e.g., Allocate)
   string write_miss_policy = 8;
-  
+
   // Trace file location
   string trace_file_path = 9;
 }

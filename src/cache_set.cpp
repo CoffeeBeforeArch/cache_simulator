@@ -3,10 +3,12 @@
 // 4/16/2020
 
 #include "cache_set.hh"
+
 #include <algorithm>
 #include <functional>
 #include <numeric>
 #include <tuple>
+
 #include "cache_config.pb.h"
 
 // Constructor

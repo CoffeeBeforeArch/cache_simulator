@@ -3,10 +3,12 @@
 // 4/15/2020
 
 #include "data_cache.hh"
+
 #include <algorithm>
 #include <bit>
 #include <cstdint>
 #include <iostream>
+
 #include "cache_config.pb.h"
 
 // Constructor
