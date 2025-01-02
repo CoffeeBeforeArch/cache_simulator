@@ -14,7 +14,7 @@
 // Constructor
 // Resizes each set based on the number of ways
 CacheSet::CacheSet(int ways) {
-  lines.resize(ways);
+  lines.resize(ways, -1);
   priority.resize(ways);
   dirty_bits.resize(ways);
 }
