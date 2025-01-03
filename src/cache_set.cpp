@@ -14,7 +14,8 @@
 // Constructor
 // Resizes each set based on the number of ways
 CacheSet::CacheSet(int ways) {
-  lines.resize(ways, -1);
+  lines.resize(ways);
+  tags.resize(ways);
   priority.resize(ways);
   dirty_bits.resize(ways);
 }
@@ -26,6 +27,10 @@ std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
   // Look up the address in the set
   auto result = std::find(begin(lines), end(lines), addr);
   auto hit = result != end(lines);
+
+  // check if tag is valid
+  if (tags[addr] == 0)
+    hit = false;
 
   // Find the latest line updated
   int latest_line;
@@ -65,6 +70,7 @@ uint32_t CacheSet::replace_line(uint64_t addr) {
   // Replace the address, and reset the priority
   auto index = std::distance(begin(priority), it);
   lines[index] = addr;
+  tags[addr] = 1;
   return index;
 }
 

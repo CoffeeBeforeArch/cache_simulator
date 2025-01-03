@@ -36,6 +36,7 @@ class CacheSet {
   // A set of cache lines
   // Only the starting address for each cache line is stored
   std::vector<uint64_t> lines;
+  std::vector<uint32_t> tags;
 
   // Number of open lines in the set
   uint32_t used_lines = 0;
