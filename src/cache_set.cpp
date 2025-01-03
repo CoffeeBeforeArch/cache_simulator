@@ -17,6 +17,7 @@ CacheSet::CacheSet(int ways) {
   lines.resize(ways);
   priority.resize(ways);
   dirty_bits.resize(ways);
+  valid.resize(ways);
 }
 
 // Probe
@@ -25,7 +26,12 @@ CacheSet::CacheSet(int ways) {
 std::tuple<bool, bool> CacheSet::probe(uint64_t addr, bool type) {
   // Look up the address in the set
   auto result = std::find(begin(lines), end(lines), addr);
+  auto index = std::distance(begin(lines), result);
   auto hit = result != end(lines);
+  if (hit && !valid[index]) {
+      hit = false;
+      valid[index] = true;
+  }
 
   // Find the latest line updated
   int latest_line;

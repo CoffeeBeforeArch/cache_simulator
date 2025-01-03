@@ -37,6 +37,9 @@ class CacheSet {
   // Only the starting address for each cache line is stored
   std::vector<uint64_t> lines;
 
+  // Mark each line valid or invalid
+  std::vector<bool> valid;
+
   // Number of open lines in the set
   uint32_t used_lines = 0;
 
